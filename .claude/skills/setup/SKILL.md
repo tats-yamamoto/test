@@ -26,6 +26,7 @@ description: 初期セットアップ、PJ追加、情報更新を対話的に�
 - 回答をもとに `.ai-secretary/projects/<PJ名>/` を作成
 - 各PJに tasks.json（空配列）、knowledge.md（テンプレ）、people.md（テンプレ）を生成
 - files/, meetings/, archive/, daily/, weekly/, monthly/ も作成
+- meetings/ には `_NAMING_RULE.md`（命名規則ファイル）を配置する
 
 #### Step 3: PJごとの詳細 → knowledge.md, people.md
 各PJについて以下を聞いてください:
@@ -60,7 +61,7 @@ description: 初期セットアップ、PJ追加、情報更新を対話的に�
 ### 2. PJ追加（/setup add-project）
 
 - 新PJ名を聞く
-- ディレクトリ作成（tasks.json, knowledge.md, people.md, files/, meetings/, archive/, daily/, weekly/, monthly/）
+- ディレクトリ作成（tasks.json, knowledge.md, people.md, files/, meetings/, meetings/_NAMING_RULE.md, archive/, daily/, weekly/, monthly/）
 - Step 3 と同じ要領でPJ情報をヒアリング
 - global/people.md と config.json にも反映
 

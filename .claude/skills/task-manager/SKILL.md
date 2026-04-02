@@ -56,36 +56,26 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 3. 新しいIDを採番（t-YYYYMMDD-NNN、同日の最大+1）
 4. タイトルのみの場合、文脈からカテゴリ・期限を推定しユーザーに確認
 5. 新しい関係者名が出てきた場合、**カタカナ表記でユーザーに確認**してから people.md への追記を提案する
-6. 過去の同種タスク（patterns.json の `task_decomposition`）を参照し、サブタスク分解を提案する（該当パターンがあれば）
-7. 同名・類似タイトルのタスクが過去に複数ある場合、`patterns.json` の `recurring_tasks` に記録を提案する
-8. tasks.json に追加して保存
-9. 保存後に読み直して構文確認
-10. 必要に応じて `reminders.json` にリマインダーを登録する（単発会議の追加、フォロー期日など）
+6. tasks.json に追加して保存
+7. 保存後に読み直して構文確認
+8. 必要に応じて `reminders.json` にリマインダーを登録する
+
+※ マイルストーン分解が必要な場合は planning スキルを使用
+※ 優先度の位置づけ提案は prioritization スキルを使用
 
 ### 完了（done）
 1. tasks.json から該当タスクを見つける
 2. `date` コマンドで現在時刻を確認する
 3. status を "done"、completed_at を現在時刻に更新
 4. 保存後に読み直して構文確認
-5. **学習記録（必須）:**
-   a. 所要日数を計算（created_at → completed_at の差分）
-   b. `.ai-secretary/global/patterns.json` の `time_estimation.accuracy_log` に以下を追加:
-      ```json
-      { "task_id": "...", "title": "...", "category": "...", "created_at": "YYYY-MM-DD", "completed_at": "YYYY-MM-DD", "days": N }
-      ```
-   c. マイルストーンがある場合、各段階の所要日数も `accuracy_log` に個別記録する
-   d. 同種タスク（同じカテゴリ・類似タイトル）のパターンがあれば `task_decomposition` を更新する
-   e. patterns.json 保存後に読み直して構文確認
+5. **learning スキルのタスク完了時記録を実行する**
 
 ### 取り下げ（drop）
 1. tasks.json から該当タスクを見つける
 2. dropped を true、drop_reason にユーザーの理由を記録
 3. status は変更しない（取り下げ時点のステータスを保持）
 4. 保存後に読み直して構文確認
-5. **学習記録（必須）:**
-   a. `.ai-secretary/global/patterns.json` の `dropped_task_patterns.observations` に特徴を追記する
-      - 例: 「チャットで拾ったタスクで2週間以上催促がなかったもの」「依頼者不明で優先度が上がらなかったもの」
-   b. patterns.json 保存後に読み直して構文確認
+5. **learning スキルのタスク取り下げ時記録を実行する**
 
 ### 更新（update）
 1. tasks.json から該当タスクを見つける
@@ -97,7 +87,9 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 2. --cat でPJ絞り込み、--status でステータス絞り込み
 3. dropped: true のタスクはデフォルトで非表示
 4. starts_at が今日より未来のタスクは非表示（upcoming で確認）
-5. 全PJの定期タスク（daily/, weekly/, monthly/ 配下の tasks.json）も走査し、通常タスクとは別セクション「定期タスク」として表示する
+5. suspended ステータスのタスクは非表示（PJ再開時に再表示）
+6. 全PJの定期タスク（daily/, weekly/, monthly/ 配下の tasks.json）も走査し、通常タスクとは別セクション「定期タスク」として表示する
+7. サブタスク（milestones）があるタスクは、進捗 `[完了数/全数]` を表示し、直近期限のサブタスクを次の行に `└` で表示する
 
 ### 待機中一覧（upcoming）
 1. 全PJの tasks.json を走査
@@ -127,14 +119,6 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 ### 日次タスクの completion_log 肥大化防止
 - 日次タスクの completion_log は直近30日分のみ保持する
 - 30日より古いエントリは記録時に自動で削除する
-
-## ユーザーが提案を修正したとき
-
-秘書の提案（優先度、カテゴリ推定、段取り等）をユーザーが修正した場合:
-1. `.ai-secretary/global/patterns.json` の `priority_tendencies.observations` に修正内容を追記する
-   - 例: `{ "date": "2026-04-02", "original": "...", "corrected": "...", "context": "..." }`
-2. 傾向を言語化して記録する（次回の同種提案で反映するため）
-3. patterns.json 保存後に構文確認
 
 ## 期限タイプ別の振る舞い
 

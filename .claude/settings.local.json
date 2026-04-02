@@ -5,7 +5,10 @@
       "Bash(while read:*)",
       "Bash(do sed:*)",
       "Bash(done)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(rm -f C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/ask.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/draft.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/extract.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/learn.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/morning.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/plan.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/priorities.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/report.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/review.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/setup.md C:/Users/tats-yamamoto/Documents/01_task/.claude/commands/task.md)",
+      "Bash(rmdir C:/Users/tats-yamamoto/Documents/01_task/.claude/commands)",
+      "Bash(ls C:/Users/tats-yamamoto/Documents/01_task/.ai-secretary/projects/*/meetings/_NAMING_RULE.md)"
     ]
   }
 }

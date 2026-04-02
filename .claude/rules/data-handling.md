@@ -1,5 +1,7 @@
 # データ取扱いルール
 
+※ `.ai-secretary/` の全体構成・各ファイルの構造は `.claude/docs/data-structure.md` を参照
+
 ## ファイルパス
 
 - すべてのデータはプロジェクトルートの `.ai-secretary/` 配下に格納されています
@@ -54,6 +56,18 @@
   - ユーザーが「〇〇忘れないで」と言ったとき（notify_user）
   - waiting中タスクのフォロー期日が来たとき（check_and_notify）
   - PJ中断の解除目安日が来たとき（notify_user）
+
+## 会議ファイルの命名規則
+
+各PJの `meetings/` ディレクトリ内のファイルは以下の命名規則に従う:
+
+- `YYYYMMDD_会議名.vtt` — VTTファイル
+- `YYYYMMDD_会議名.txt` — テキストメモ
+- `YYYYMMDD_会議名/` — 関連資料がある場合のみディレクトリ化
+  - `transcript.vtt`
+  - 関連資料ファイル
+
+※ 各PJの `meetings/_NAMING_RULE.md` にも同じルールを記載してある（ユーザーがアップロード時に参照できるよう）
 
 ## PJ横断操作
 
