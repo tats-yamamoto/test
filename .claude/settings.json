@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -d .ai-secretary/projects || echo '{\"hookSpecificOutput\":{\"message\":\".ai-secretary/projects が見つかりません。/setup を実行して初期セットアップを行ってください。\"}}'",
+            "description": "AI秘書データディレクトリの存在確認"
+          }
+        ]
+      }
+    ]
+  }
+}
