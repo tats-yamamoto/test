@@ -97,7 +97,7 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
    - 日付・時間等を更新
 3. 構文確認
 
-**注意:** `meetings.json` は変更しない（今週限りの変更のため）。恒久的な変更の場合はユーザーに確認の上 `meetings.json` も更新する。
+**注意:** `meetings.json` は変更しない（今週限りの変更のため）。恒久的な変更の場合はユーザーに確認の上 `meetings.json` も更新し、**impact-check スキル（イベント: 定例会議の恒久変更）の実行を推奨する**。
 
 ### 4. キャンセル（cancel）
 
@@ -127,3 +127,8 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
 
 **曜日と day_of_week の対応:**
 - mon → 月曜、tue → 火曜、wed → 水曜、thu → 木曜、fri → 金曜
+- daily → 月曜〜金曜の全日に展開（各日に1エントリずつ作成）
+
+**suspended な定例会議の扱い:**
+- `meetings.json` のエントリに `"suspended": true` がある場合、週次リセット時にスキップする（`weekly-schedule.json` に展開しない）
+- PJ再開時に `suspended` を `false` にすれば、次回の週次リセットから自動的に復帰する

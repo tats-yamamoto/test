@@ -64,6 +64,7 @@ description: 初期セットアップ、PJ追加、情報更新を対話的に�
 - ディレクトリ作成（tasks.json, knowledge.md, people.md, files/, meetings/, meetings/_NAMING_RULE.md, archive/, daily/, weekly/, monthly/）
 - Step 3 と同じ要領でPJ情報をヒアリング
 - global/people.md と config.json にも反映
+- **完了後、impact-check スキル（イベント: PJ追加）の実行を推奨する**（定例会議の weekly-schedule 展開漏れ等を防ぐため）
 
 ### 3. 情報更新（/setup update <PJ名>）
 

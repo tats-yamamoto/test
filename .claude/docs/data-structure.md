@@ -268,14 +268,19 @@ PJ固有の関係者情報。レビュー傾向は日付付きで蓄積。
   {
     "id": "mtg-r-{PJ略称}-NNN",
     "title": "会議名",
-    "day_of_week": "mon | tue | wed | thu | fri",
+    "day_of_week": "mon | tue | wed | thu | fri | daily",
     "time": "HH:MM-HH:MM",
     "participants": ["名前"],
     "purpose": "目的",
-    "project": "PJ名"
+    "project": "PJ名",
+    "suspended": false,
+    "suspended_reason": "理由 or null"
   }
 ]
 ```
+
+- `day_of_week: "daily"` は週次リセット時に月〜金の全日に展開される
+- `suspended: true` の定例は週次リセット時にスキップされる（PJ中断時に使用）
 
 ### projects/\<PJ\>/meetings/
 
@@ -340,5 +345,6 @@ meetings/
 | reminders.json | secretary エージェント（morning-briefing で処理） |
 | templates/ | drafter エージェント |
 | config.json | setup |
+| 構成変更の影響調査 | impact-check |
 
 データ取扱いの詳細ルールは `.claude/rules/data-handling.md` を参照。
