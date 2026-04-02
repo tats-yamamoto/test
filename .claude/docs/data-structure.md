@@ -306,6 +306,8 @@ meetings/
     "id": "t-YYYYMMDD-NNN",
     "title": "タスク名",
     "description": "説明",
+    "cycle_day": "mon",
+    "cycle_date": "last",
     "completion_log": [
       { "period": "YYYY-MM-DD | YYYY-Www | YYYY-MM", "completed_at": "YYYY-MM-DD" }
     ]
@@ -314,8 +316,20 @@ meetings/
 ```
 
 - 日次: period = `YYYY-MM-DD`（直近30日分のみ保持）
-- 週次: period = `YYYY-Www`
-- 月次: period = `YYYY-MM`
+- 週次: period = `YYYY-Www`（**提出先サイクルの週番号**。例: W15月曜の報告会で発表する週報 → period = W15）
+- 月次: period = `YYYY-MM`（**提出先サイクルの月**）
+
+#### サイクル基準日（cycle_day / cycle_date）
+
+週次・月次タスクには、そのタスクの「提出先サイクル」を特定するための基準日を設定する。ブリーフィング時の完了判定に使用。
+
+| フィールド | 対象 | 値 | 意味 |
+|---|---|---|---|
+| `cycle_day` | 週次 | `"mon"` 〜 `"fri"` | サイクルの基準曜日。次のこの曜日が属するISO週 = チェック対象period |
+| `cycle_date` | 月次 | `1`〜`28` or `"last"` | サイクルの基準日。この日を過ぎたら来月がチェック対象period |
+
+- 未設定の場合: 週次は今週、月次は今月をチェック（従来互換）
+- 例: 週報（cycle_day: "mon"）→ 木曜時点では「次の月曜のISO週」をチェック → まだ未完了なら表示
 
 ### templates/
 

@@ -178,6 +178,8 @@ daily/weekly/monthly tasks.json（定期タスク）
 - [ ] 該当の `daily/`, `weekly/`, `monthly/` の tasks.json が更新されているか
 - [ ] `completion_log` の形式が正しいか（日次: YYYY-MM-DD, 週次: YYYY-Www, 月次: YYYY-MM）
 - [ ] 週次・月次タスクに `deadline_rule` が設定されているか
+- [ ] 週次タスクに `cycle_day` が設定されているか（ブリーフィングの完了判定に必要）
+- [ ] 月次タスクに `cycle_date` が設定されているか（ブリーフィングの完了判定に必要）
 
 ---
 

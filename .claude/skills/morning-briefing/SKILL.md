@@ -49,10 +49,22 @@ description: 朝のブリーフィングを生成するスキル。ユーザー�
 
 #### 今日の定期タスク
 
-定期タスクの完了判定には `completion_log` を使用する:
+定期タスクの完了判定には `completion_log` を使用する。**重要: 週次・月次タスクの `period` は「成果物の提出先サイクル」を表す（例: 週報のW15 = W15月曜の報告会で発表する分）。今の作業週/月ではなく、次の提出先サイクルを基準に判定すること。**
+
 - **日次**: 今日の日付（YYYY-MM-DD）が completion_log に存在するか確認。なければ未完了として表示
-- **週次**: 今週の週番号（YYYY-Www）が completion_log に存在するか確認。なければ未完了として表示。締切ルール（deadline_rule）に基づいて今日が対応日かも判断する
-- **月次**: 今月（YYYY-MM）が completion_log に存在するか確認。なければ未完了として表示。月末が近い場合（残り5営業日以内）は特にリマインド
+- **週次**: `cycle_day`（サイクルの基準曜日）から対象periodを特定する:
+  1. 今日が `cycle_day` と同じ曜日 → 対象period = 今日のISO週番号
+  2. それ以外 → 対象period = **次の `cycle_day` の日付**が属するISO週番号
+  3. `cycle_day` が未設定 → 対象period = 今週のISO週番号（従来互換）
+  - 対象periodが completion_log に存在するか確認。なければ未完了として表示
+  - 締切ルール（deadline_rule）に基づいて実際の締切日も表示する
+  - 例: 今日が木曜(W14)、cycle_day=mon → 次の月曜=4/6(W15) → W15をチェック
+- **月次**: `cycle_date`（サイクルの基準日）から対象periodを特定する:
+  1. `cycle_date` が `"last"` または 今日の日 <= `cycle_date` → 対象period = 今月（YYYY-MM）
+  2. 今日の日 > `cycle_date` → 対象period = 来月（YYYY-MM）
+  3. `cycle_date` が未設定 → 対象period = 今月（従来互換）
+  - 対象periodが completion_log に存在するか確認。なければ未完了として表示
+  - 月末が近い場合（残り5営業日以内）は特にリマインド
 
 表示形式:
 - 完了済みの定期タスクは「✅ 済」と表示（安心感のため）
