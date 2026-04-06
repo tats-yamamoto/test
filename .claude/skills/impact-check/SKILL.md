@@ -54,7 +54,7 @@ daily/weekly/monthly tasks.json（定期タスク）
 | setup | config.json | config.json, PJディレクトリ一式 |
 | planning | tasks.json, patterns.json, knowledge.md | tasks.json（milestones） |
 | prioritization | tasks.json, patterns.json, weekly-schedule.json | — |
-| learning | tasks.json, patterns.json | patterns.json |
+| learning | tasks.json, patterns.json（observations, insights 含む） | patterns.json（observations, insights 含む） |
 | knowledge-base | knowledge.md, people.md | knowledge.md, people.md |
 | self-review | patterns.json（review_tendencies） | — |
 | impact-check | 全ファイル（読み取り専用） | — |

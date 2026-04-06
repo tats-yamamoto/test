@@ -102,6 +102,45 @@ PJ一覧とタスクカテゴリの定義。
 | recurring_tasks | learning | 繰り返しタスクの検出結果 |
 | review_tendencies | learning, self-review | レビュアーごとの指摘傾向（定量） |
 | planning_history | planning | 段取りの実績記録 |
+| observations | learning（全エージェントが記録） | 会話中の暗黙観察ログ |
+| insights | learning（morning-briefingが検出） | 観察から検出されたパターン（信頼度スコア付き） |
+
+#### observations のエントリ
+
+```json
+{
+  "id": "obs-YYYYMMDD-NNN",
+  "date": "YYYY-MM-DD",
+  "source": "スキル名またはエージェント名",
+  "type": "correction | preference | decision | workflow",
+  "description": "何が起きたかの簡潔な記述",
+  "context": "どういう状況で起きたか"
+}
+```
+
+- `correction`: 秘書の提案をユーザーが修正した
+- `preference`: ユーザーの好み・スタイルが現れた
+- `decision`: 複数選択肢からの選択
+- `workflow`: 作業手順・順序のパターン
+
+#### insights のエントリ
+
+```json
+{
+  "id": "ins-YYYYMMDD-NNN",
+  "created_at": "YYYY-MM-DD",
+  "updated_at": "YYYY-MM-DD",
+  "confidence": 0.3,
+  "description": "行動パターンの言語化",
+  "evidence": ["obs-YYYYMMDD-NNN"],
+  "domain": "drafting | prioritization | planning | communication | workflow | scheduling",
+  "status": "active | crystallized | dismissed"
+}
+```
+
+- 信頼度 0.3（初検出）→ 0.9（確立）の範囲で変動
+- `crystallized`: スキル・ルールに反映済み
+- `dismissed`: ユーザーが明示的に否定
 
 ### global/people.md
 
