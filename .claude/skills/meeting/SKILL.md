@@ -132,3 +132,8 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
 **suspended な定例会議の扱い:**
 - `meetings.json` のエントリに `"suspended": true` がある場合、週次リセット時にスキップする（`weekly-schedule.json` に展開しない）
 - PJ再開時に `suspended` を `false` にすれば、次回の週次リセットから自動的に復帰する
+
+**タスクの related_meetings からの展開:**
+- 週次リセット時に、全PJの `tasks.json` の `related_meetings` も走査する
+- 今週の日付に該当する会議があれば `weekly-schedule.json` に追加する（source_id は null、note にタスクIDを記載）
+- これにより、タスクに紐づく単発会議（キックオフ、面談等）が自動的にスケジュールに反映される

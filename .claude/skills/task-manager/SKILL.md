@@ -32,8 +32,14 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
     "related_files": ["ファイルパスの配列"],
     "constraints": "制約条件"
   },
+  "todos": [
+    { "title": "アクション名", "status": "todo | done" }
+  ],
   "milestones": [
-    { "title": "マイルストーン名", "date": "YYYY-MM-DD", "status": "todo | in_progress | done" }
+    { "title": "チェックポイント名", "date": "YYYY-MM-DD", "done": false }
+  ],
+  "related_meetings": [
+    { "title": "会議名", "date": "YYYY-MM-DD", "time": "HH:MM-HH:MM or null", "participants": ["名前"] }
   ],
   "review_history": [
     { "reviewer": "名前", "date": "YYYY-MM-DD", "feedback": "内容", "resolved": true }
@@ -54,6 +60,19 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 - 「〜に出る」「〜を続ける」のような継続的な日常動作はタスク化しない
   - 例: NG「定例会議に参加開始」→ OK「会議でのキャッチアップ内容を整理する」
 
+## タスクの表示タイミング原則
+
+**タスクは「今やることがある」ときだけ表示する。**
+
+- タスクの最初のアクションが会議（キックオフ、打合せ等）の後に発生する場合、`starts_at` をその会議の日付に設定する
+- 会議自体は `related_meetings` に記録し、`weekly-schedule.json` 側で管理する（タスク一覧ではなくスケジュールに表示）
+- 会議後にTODO・マイルストーンが具体化したら、タスクに追加する
+- `starts_at` 到達前は「待機中」として通常一覧から非表示（upcoming で確認可能）
+
+例: 部署紹介（キックオフ4/8、本番5/20）
+- キックオフ前: タスク非表示（`starts_at: "2026-04-08"`）。キックオフは会議スケジュールに表示
+- キックオフ後: todos・milestonesを追加、タスクがアクティブに表示される
+
 ## 操作手順
 
 ### 追加（add）
@@ -61,13 +80,25 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 2. 該当PJの tasks.json を読み込む
 3. 新しいIDを採番（t-YYYYMMDD-NNN、同日の最大+1）
 4. タイトルのみの場合、文脈からカテゴリ・期限を推定しユーザーに確認
-5. 新しい関係者名が出てきた場合、**カタカナ表記でユーザーに確認**してから people.md への追記を提案する
-6. tasks.json に追加して保存
-7. 保存後に読み直して構文確認
-8. 必要に応じて `reminders.json` にリマインダーを登録する
+5. **starts_at の判断**: タスクの最初のアクションが会議の後に発生する場合、`starts_at` をその会議日に設定し、会議を `related_meetings` に登録する。今すぐやることがあるなら `starts_at` は null
+6. 新しい関係者名が出てきた場合、**カタカナ表記でユーザーに確認**してから people.md への追記を提案する
+7. tasks.json に追加して保存
+8. 保存後に読み直して構文確認
+9. 必要に応じて `reminders.json` にリマインダーを登録する
+10. `related_meetings` に登録した会議が今週に含まれる場合、`weekly-schedule.json` にも追加する
 
 ※ マイルストーン分解が必要な場合は planning スキルを使用
 ※ 優先度の位置づけ提案は prioritization スキルを使用
+
+### TODO完了時の starts_at 自動提案
+
+タスクのTODOを完了にした結果、**全TODOが done かつ未来の related_meetings が残っている**場合:
+
+1. 「全てのTODOが完了しました。次は〇〇（会議名, MM/DD）の後にアクションが発生する可能性があります」と報告
+2. `starts_at` を次の related_meetings の日付に設定することを提案
+3. ユーザーが承認したら `starts_at` を更新し、タスクは会議日まで非表示になる
+
+※ この判定はhook（todo-completion-check.py）でも自動検出される
 
 ### 完了（done）
 1. tasks.json から該当タスクを見つける
@@ -95,7 +126,9 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 4. starts_at が今日より未来のタスクは非表示（upcoming で確認）
 5. suspended ステータスのタスクは非表示（PJ再開時に再表示）
 6. 全PJの定期タスク（daily/, weekly/, monthly/ 配下の tasks.json）も走査し、通常タスクとは別セクション「定期タスク」として表示する
-7. サブタスク（milestones）があるタスクは、進捗 `[完了数/全数]` を表示し、直近期限のサブタスクを次の行に `└` で表示する
+7. todos があるタスクは、進捗 `[完了数/全数]` を表示し、未完了のTODOを次の行に `└ TODO:` で表示する
+8. milestones があるタスクは、直近の未完了マイルストーンを `└ MS:` で表示する
+9. related_meetings があるタスクは、直近の未来の会議を `└ 会議:` で表示する
 
 ### 待機中一覧（upcoming）
 1. 全PJの tasks.json を走査

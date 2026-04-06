@@ -83,8 +83,20 @@ description: タスクの段取り・マイルストーン設計を行うスキ�
 - レビュアー: ○○さんは結論ファースト重視（people.md）
 ```
 
+## 会議起点のタスク設計
+
+タスクの最初のアクションが会議（キックオフ、打合せ等）の後に発生する場合:
+
+1. その会議を `related_meetings` に登録する
+2. `starts_at` を会議の日付に設定する（会議前はタスク非表示）
+3. 会議前の段階では todos・milestones は空にしておく
+4. 会議後に具体的な todos・milestones を追加する
+
+段取り提案時にも、「この会議の後にタスクが具体化する」というパターンを認識し、会議前のアクションがあるかないかを判断して `starts_at` を設定する。
+
 ## 提案後の手順
 
 1. 「この段取りでマイルストーンを登録しますか？」と確認
-2. 承認されたら task-manager スキルで tasks.json の milestones に追加
-3. `patterns.json` の `planning_history.observations` に段取りパターンを記録
+2. 承認されたら task-manager スキルで tasks.json の todos / milestones / related_meetings に追加
+3. `starts_at` の設定が必要か判断し、会議起点のタスクであれば設定する
+4. `patterns.json` の `planning_history.observations` に段取りパターンを記録

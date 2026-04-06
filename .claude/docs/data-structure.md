@@ -118,11 +118,11 @@ PJ一覧とタスクカテゴリの定義。
 }
 ```
 
-- `correction`: 秘書の提案をユーザーが修正した
-- `preference`: ユーザーの好み・スタイルが現れた
-- `decision`: 複数選択肢からの選択
-- `workflow`: 作業手順・順序のパターン
-- `knowledge`: PJ・関係者に関する暗黙知（人の傾向、暗黙のルール、力関係等）
+- `correction`: 秘書の出力への修正・削除・追加
+- `decision`: 選択・部分承認
+- `preference`: 条件指定・理由の開示・感情/評価・好み全般
+- `workflow`: 繰り返しパターン・作業順序・利用パターン
+- `knowledge`: PJ・関係者・組織の暗黙知
 
 #### insights のエントリ
 
@@ -247,13 +247,19 @@ PJ一覧とタスクカテゴリの定義。
       "related_files": [],
       "constraints": "制約条件"
     },
+    "todos": [
+      { "title": "アクション名", "status": "todo | done" }
+    ],
     "milestones": [
-      { "title": "MS名", "date": "YYYY-MM-DD", "status": "todo | in_progress | done" }
+      { "title": "チェックポイント名", "date": "YYYY-MM-DD", "done": false }
+    ],
+    "related_meetings": [
+      { "title": "会議名", "date": "YYYY-MM-DD", "time": "HH:MM-HH:MM or null", "participants": ["名前"] }
     ],
     "review_history": [
       { "reviewer": "名前", "date": "YYYY-MM-DD", "feedback": "内容", "resolved": false }
     ],
-    "starts_at": "YYYY-MM-DD or null",
+    "starts_at": "YYYY-MM-DD or null — 着手可能日。会議起点のタスクは会議日を設定",
     "tags": [],
     "created_at": "ISO8601",
     "updated_at": "ISO8601",

@@ -52,7 +52,7 @@ daily/weekly/monthly tasks.json（定期タスク）
 | meeting | meetings.json, weekly-schedule.json | meetings.json, weekly-schedule.json |
 | morning-briefing | weekly-schedule.json, tasks.json, 定期tasks, reminders.json, patterns.json | reminders.json（処理済み更新） |
 | setup | config.json | config.json, PJディレクトリ一式 |
-| planning | tasks.json, patterns.json, knowledge.md | tasks.json（milestones） |
+| planning | tasks.json, patterns.json, knowledge.md | tasks.json（todos, milestones, related_meetings） |
 | prioritization | tasks.json, patterns.json, weekly-schedule.json | — |
 | learning | tasks.json, patterns.json（observations, insights 含む） | patterns.json（observations, insights 含む） |
 | knowledge-base | knowledge.md, people.md | knowledge.md, people.md |
