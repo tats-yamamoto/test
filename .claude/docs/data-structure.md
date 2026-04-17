@@ -19,7 +19,8 @@ PJ追加・構造変更時はこのファイルも更新してください。
 │
 ├── projects/                        PJ単位のデータ
 │   └── <PJ名>/
-│       ├── tasks.json               タスク一覧
+│       ├── tasks.json               タスク一覧（アクティブのみ: todo/in_progress/waiting/suspended）
+│       ├── tasks_archive.json       完了・取り下げ済みタスクのアーカイブ
 │       ├── knowledge.md             ナレッジ（背景・経緯・決定事項・行間情報）
 │       ├── people.md                関係者（PJ固有の役職・力関係・レビュー傾向）
 │       ├── meetings.json            定例会議の定義
@@ -224,7 +225,13 @@ PJ一覧とタスクカテゴリの定義。
 
 ### projects/\<PJ\>/tasks.json
 
-タスク一覧。配列形式。
+アクティブなタスク一覧（todo/in_progress/waiting/suspended）。配列形式。
+done/dropped のタスクは `tasks_archive.json` に移動される。
+
+### projects/\<PJ\>/tasks_archive.json
+
+完了・取り下げ済みタスクのアーカイブ。配列形式。構造は tasks.json と同一。
+一覧表示では読み込まない。過去タスクの検索・learning スキルでの実績参照時のみ使用。
 
 ```json
 [
@@ -232,6 +239,7 @@ PJ一覧とタスクカテゴリの定義。
     "id": "t-YYYYMMDD-NNN",
     "title": "タスク名",
     "status": "todo | in_progress | waiting | done",
+    "assignee": "担当者名 or null — null/ヤマモト=自分担当, 他名前=ウォッチ対象（他人のアクション）",
     "deadline": {
       "date": "YYYY-MM-DD or null",
       "type": "hard | soft | asap | none",

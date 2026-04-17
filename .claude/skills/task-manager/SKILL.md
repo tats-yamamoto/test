@@ -7,8 +7,16 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 
 ## データの場所
 
-- 各PJのタスクデータ: `.ai-secretary/projects/<PJ名>/tasks.json`
+- 各PJのタスクデータ: `.ai-secretary/projects/<PJ名>/tasks.json`（アクティブなタスクのみ）
+- アーカイブ: `.ai-secretary/projects/<PJ名>/tasks_archive.json`（done/dropped のタスク）
 - 定期タスク: `.ai-secretary/projects/<PJ名>/daily/tasks.json`, `weekly/tasks.json`, `monthly/tasks.json`
+
+### アーカイブの仕組み
+
+- `tasks.json` には **todo / in_progress / waiting / suspended** のタスクのみ保持する
+- タスクが **done** または **dropped** になったら `tasks_archive.json` に移動し、`tasks.json` から削除する
+- `tasks_archive.json` がまだ存在しない場合は空配列 `[]` で新規作成してからタスクを追加する
+- 一覧表示（list）ではアーカイブを読まない。過去タスクの検索時のみアーカイブを参照する
 
 ## タスクデータ構造
 
@@ -17,6 +25,7 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
   "id": "t-YYYYMMDD-NNN",
   "title": "タスク名",
   "status": "todo | in_progress | waiting | done",
+  "assignee": "担当者名 or null",
   "deadline": {
     "date": "YYYY-MM-DD or null",
     "type": "hard | soft | asap | none",
@@ -81,11 +90,12 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 3. 新しいIDを採番（t-YYYYMMDD-NNN、同日の最大+1）
 4. タイトルのみの場合、文脈からカテゴリ・期限を推定しユーザーに確認
 5. **starts_at の判断**: タスクの最初のアクションが会議の後に発生する場合、`starts_at` をその会議日に設定し、会議を `related_meetings` に登録する。今すぐやることがあるなら `starts_at` は null
-6. 新しい関係者名が出てきた場合、**カタカナ表記でユーザーに確認**してから people.md への追記を提案する
-7. tasks.json に追加して保存
-8. 保存後に読み直して構文確認
-9. 必要に応じて `reminders.json` にリマインダーを登録する
-10. `related_meetings` に登録した会議が今週に含まれる場合、`weekly-schedule.json` にも追加する
+6. **assignee の判断**: 自分がやるタスクなら `null` または `"ヤマモト"`。他人のアクションをPM視点でウォッチしたい場合は担当者名を指定（人名・「2年目」等の役割表記も可）
+7. 新しい関係者名が出てきた場合、**カタカナ表記でユーザーに確認**してから people.md への追記を提案する
+8. tasks.json に追加して保存
+9. 保存後に読み直して構文確認
+10. 必要に応じて `reminders.json` にリマインダーを登録する
+11. `related_meetings` に登録した会議が今週に含まれる場合、`weekly-schedule.json` にも追加する
 
 ※ マイルストーン分解が必要な場合は planning スキルを使用
 ※ 優先度の位置づけ提案は prioritization スキルを使用
@@ -105,14 +115,16 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 2. `date` コマンドで現在時刻を確認する
 3. status を "done"、completed_at を現在時刻に更新
 4. 保存後に読み直して構文確認
-5. **learning スキルのタスク完了時記録を実行する**
+5. **該当タスクを tasks_archive.json に移動し、tasks.json から削除する**
+6. **learning スキルのタスク完了時記録を実行する**
 
 ### 取り下げ（drop）
 1. tasks.json から該当タスクを見つける
 2. dropped を true、drop_reason にユーザーの理由を記録
 3. status は変更しない（取り下げ時点のステータスを保持）
 4. 保存後に読み直して構文確認
-5. **learning スキルのタスク取り下げ時記録を実行する**
+5. **該当タスクを tasks_archive.json に移動し、tasks.json から削除する**
+6. **learning スキルのタスク取り下げ時記録を実行する**
 
 ### 更新（update）
 1. tasks.json から該当タスクを見つける
@@ -125,10 +137,12 @@ description: タスクのCRUD操作、検索、フィルタリングを行うス
 3. dropped: true のタスクはデフォルトで非表示
 4. starts_at が今日より未来のタスクは非表示（upcoming で確認）
 5. suspended ステータスのタスクは非表示（PJ再開時に再表示）
-6. 全PJの定期タスク（daily/, weekly/, monthly/ 配下の tasks.json）も走査し、通常タスクとは別セクション「定期タスク」として表示する
-7. todos があるタスクは、進捗 `[完了数/全数]` を表示し、未完了のTODOを次の行に `└ TODO:` で表示する
-8. milestones があるタスクは、直近の未完了マイルストーンを `└ MS:` で表示する
-9. related_meetings があるタスクは、直近の未来の会議を `└ 会議:` で表示する
+6. **assignee が自分以外（null/"ヤマモト" 以外）のタスクは「ウォッチ中」枠で別表示**（PM視点で他人のアクションを追うタスク。日次TODOとは分ける）
+7. 全PJの定期タスク（daily/, weekly/, monthly/ 配下の tasks.json）も走査し、通常タスクとは別セクション「定期タスク」として表示する
+8. todos があるタスクは、進捗 `[完了数/全数]` を表示し、未完了のTODOを次の行に `└ TODO:` で表示する
+9. milestones があるタスクは、直近の未完了マイルストーンを `└ MS:` で表示する
+10. related_meetings があるタスクは、直近の未来の会議を `└ 会議:` で表示する
+11. ウォッチ枠のタスクは担当者名を `[担当:シンカイ]` のように明示する
 
 ### 待機中一覧（upcoming）
 1. 全PJの tasks.json を走査
