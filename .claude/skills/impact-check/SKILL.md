@@ -54,9 +54,13 @@ daily/weekly/monthly tasks.json（定期タスク）
 | setup | config.json | config.json, PJディレクトリ一式 |
 | planning | tasks.json, patterns.json, knowledge.md | tasks.json（todos, milestones, related_meetings） |
 | prioritization | tasks.json, patterns.json, weekly-schedule.json | — |
-| learning | tasks.json, patterns.json（observations, insights 含む） | patterns.json（observations, insights 含む） |
+| learning | tasks.json, patterns.json, global/review/people/<名前>.md | patterns.json（observations, insights）, global/review/people/<名前>.md |
 | knowledge-base | knowledge.md, people.md | knowledge.md, people.md |
-| self-review | patterns.json（review_tendencies） | — |
+| self-review | global/review/people/<名前>.md, tasks.json（review_history） | — |
+| drafting | tasks.json, knowledge.md, people.md, patterns.json, templates/ | —（observations は learning 経由で記録） |
+| extraction | VTT/メモ, knowledge.md, people.md | tasks.json・knowledge.md・people.md（task-manager / knowledge-base 経由） |
+| strategic-analysis | knowledge.md, people.md, tasks.json, meetings/, files/, patterns.json | — |
+| weekly-report | 入力テキスト（VTT/メモ/下書き）中心 | — |
 | impact-check | 全ファイル（読み取り専用） | — |
 
 ## 2つのモード
@@ -230,6 +234,7 @@ daily/weekly/monthly tasks.json（定期タスク）
 #### C. タスクとリマインダーの整合性
 - `reminders.json` の `related_task` が実在するタスクを指しているか
 - `done: false` のリマインダーで `trigger_date` が過去のものがないか（処理漏れ）
+- **active な `tasks.json` に `status: "done"` / `dropped: true` が残っていないか**（残っていれば tasks_archive.json へ移動）
 
 #### D. suspended 状態の整合性
 - suspended な PJ のタスクがすべて `status: "suspended"` になっているか
@@ -242,6 +247,7 @@ daily/weekly/monthly tasks.json（定期タスク）
 #### F. スキルとデータの整合性
 - `data-structure.md` に記載されたスキーマと、実際のデータファイルの構造が一致するか
 - 各スキルが期待するフィールド（`suspended`, `day_of_week: "daily"` 等）が、対応するデータファイルで正しく処理されているか
+- **`patterns.json` の observations が正規形（`id, date, type, context, observation, source` の6キー、`type` は5値enum）に揃っているか**
 
 ### 出力形式
 

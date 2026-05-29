@@ -9,7 +9,7 @@ description: タスクの段取り・マイルストーン設計を行うスキ�
 
 1. 対象タスク（tasks.json）— 期限、期限タイプ、背景、制約
 2. 該当PJの `knowledge.md` — レビュープロセス、制約条件
-3. 該当PJの `people.md` — レビュアーの好み・スケジュール・力関係
+3. 該当PJの `people.md` — レビュアーのスケジュール・力関係 ／ `global/review/people/<名前>.md` — レビュー傾向
 4. `.ai-secretary/global/user-profile.md` — 報告ライン（TL→GM→部長）、勤務スタイル
 5. `.ai-secretary/global/weekly-schedule.json` — 今週の会議密度
 6. `.ai-secretary/global/patterns.json` — 過去の実績（time_estimation, task_decomposition, planning_history）

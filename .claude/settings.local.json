@@ -1,62 +1,4 @@
 {
-  "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo \"現在: $(date '+%Y-%m-%d %H:%M (%a)')\""
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python .claude/hooks/knowledge-reminder.py"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python .claude/hooks/validate-json.py"
-          },
-          {
-            "type": "command",
-            "command": "python .claude/hooks/impact-check-reminder.py"
-          },
-          {
-            "type": "command",
-            "command": "python .claude/hooks/learning-reminder.py"
-          },
-          {
-            "type": "command",
-            "command": "python .claude/hooks/todo-completion-check.py"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo '[暗黙観察リマインド] この応答で会話が終了しそうな場合（ユーザーの依頼が完了した・相談が一段落した等）、暗黙観察を実行してください。patterns.json の observations に記録すべき内容がないか振り返り、該当があれば記録してから応答を返してください。該当がなければ何もしなくてOKです。会話の途中ターンであればこのリマインドは無視してください。'"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(*)",
@@ -73,7 +15,55 @@
       "TaskCreate(*)",
       "TaskUpdate(*)",
       "CronCreate(*)",
-      "CronDelete(*)"
+      "CronDelete(*)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\tats-yamamoto\\\\OneDrive - TOYOTA SYSTEMS Corporation\\\\ドキュメント\\\\01_task\\\\.ai-secretary\\\\projects\\\\CodeBeamer\\\\meetings\" -Recurse | ForEach-Object { $_.FullName + \" | \" + $_.LastWriteTime })"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"現在: $(date '+%Y-%m-%d %H:%M (%a)')\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/validate-json.py"
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/todo-completion-check.py"
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/learning-reminder.py"
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/impact-check-reminder.py"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '[暗黙観察リマインド] この応答で会話が終了しそうな場合（ユーザーの依頼が完了した・相談が一段落した等）、暗黙観察を実行してください。patterns.json の observations に記録すべき内容がないか振り返り、該当があれば記録してから応答を返してください。該当がなければ何もしなくてOKです。会話の途中ターンであればこのリマインドは無視してください。'"
+          }
+        ]
+      }
     ]
   }
 }

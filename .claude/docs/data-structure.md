@@ -83,11 +83,6 @@ PJ一覧とタスクカテゴリの定義。
     "observations": []
   },
   "recurring_tasks": [],
-  "review_tendencies": {
-    "by_reviewer": {
-      "<レビュアー名>": { "total_reviews": N, "common_points": ["..."], "last_review": "YYYY-MM-DD" }
-    }
-  },
   "planning_history": {
     "observations": []
   }
@@ -101,9 +96,8 @@ PJ一覧とタスクカテゴリの定義。
 | priority_tendencies | prioritization, learning | ユーザーの優先度修正履歴 |
 | dropped_task_patterns | learning | 取り下げタスクの傾向 |
 | recurring_tasks | learning | 繰り返しタスクの検出結果 |
-| review_tendencies | learning, self-review | レビュアーごとの指摘傾向（定量） |
 | planning_history | planning | 段取りの実績記録 |
-| observations | learning（全エージェントが記録） | 会話中の暗黙観察ログ |
+| observations | learning（秘書がどのモードでも記録） | 会話中の暗黙観察ログ |
 | insights | learning（morning-briefingが検出） | 観察から検出されたパターン（信頼度スコア付き） |
 
 #### observations のエントリ
@@ -112,12 +106,14 @@ PJ一覧とタスクカテゴリの定義。
 {
   "id": "obs-YYYYMMDD-NNN",
   "date": "YYYY-MM-DD",
-  "source": "スキル名またはエージェント名",
-  "type": "correction | preference | decision | workflow",
-  "description": "何が起きたかの簡潔な記述",
-  "context": "どういう状況で起きたか"
+  "type": "correction | preference | decision | workflow | knowledge",
+  "context": "どういう状況で起きたか",
+  "observation": "何が起きたかの簡潔な記述",
+  "source": "アクティブなスキル/モード名（task-manager, drafting, strategic-analysis 等）"
 }
 ```
+
+**全 observation はこの6キー（id, date, type, context, observation, source）で統一する。`id` は必須、`type` は5値enumのみ、`description` 等の別名キーは使わない。**
 
 - `correction`: 秘書の出力への修正・削除・追加
 - `decision`: 選択・部分承認
@@ -184,7 +180,7 @@ PJ一覧とタスクカテゴリの定義。
 
 ### global/user-profile.md
 
-ユーザーの勤務スタイル・報告ライン。全エージェントが参照。
+ユーザーの勤務スタイル・報告ライン。秘書が常に参照。
 
 ```markdown
 # ユーザープロフィール
@@ -387,7 +383,7 @@ meetings/
 
 ### templates/
 
-ドラフトエージェントが使用するテンプレート。必要に応じて追加。
+drafting スキル（執筆モード）が使用するテンプレート。必要に応じて追加。
 
 ---
 
@@ -402,16 +398,33 @@ meetings/
 
 ---
 
+## global/review/（レビュー関連ナレッジ）
+
+「成果物をレビューに通す」ための蓄積ナレッジの名前空間。
+
+- `people/<名前>.md` — レビュアーごとの傾向（`## サマリ` ＋ `## FB履歴`）。ファイル名はカタカナ人名（役職なし）。learning が書き込み、self-review / drafting が参照する。
+- （将来）資料作りのノウハウ。
+
+人物データは三分割で管理する（詳細は `global/review/_STRUCTURE.md` / `data-handling.md`）:
+
+| データ | 置き場 |
+|---|---|
+| 基本情報（役職・関係・頼み方） | `global/people.md` |
+| レビュー傾向 | `global/review/people/<名前>.md` |
+| そのPJでの役割・力関係 | `projects/<PJ>/people.md` |
+| 個別FBの事実ログ | タスクの `review_history` |
+
 ## 関係するスキル・ルール
 
 | データ | 主に管理するスキル |
 |---|---|
 | tasks.json | task-manager |
 | knowledge.md, people.md | knowledge-base |
+| global/review/people/<名前>.md | learning（書込）／ self-review・drafting・planning（参照） |
 | meetings.json, weekly-schedule.json | meeting |
-| patterns.json | learning, planning, prioritization, self-review |
-| reminders.json | secretary エージェント（morning-briefing で処理） |
-| templates/ | drafter エージェント |
+| patterns.json | learning, planning, prioritization |
+| reminders.json | morning-briefing（処理）・task-manager 等（登録） |
+| templates/ | drafting（執筆モード） |
 | config.json | setup |
 | 構成変更の影響調査 | impact-check |
 

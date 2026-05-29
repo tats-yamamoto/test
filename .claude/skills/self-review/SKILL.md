@@ -7,10 +7,9 @@ description: ドラフト提出前のセルフレビュースキル。レビュ�
 
 ## 前提: 必ず参照するデータ
 
-1. 該当PJの `people.md` — レビュアーのFB傾向（定性情報）
-2. `global/people.md` — レビュアーの全般的な傾向
-3. `.ai-secretary/global/patterns.json` の `review_tendencies` — レビュアーの指摘パターン（定量情報）
-4. 対象タスクの `review_history` — このタスクの過去のFB（差し戻し履歴がある場合）
+1. `.ai-secretary/global/review/people/<レビュアー名>.md` — レビュアーの傾向（サマリ＋FB履歴）。**一次ソース**
+2. 対象タスクの `review_history` — このタスクの過去のFB（差し戻し履歴がある場合）
+3. （将来）`.ai-secretary/global/review/` 配下の資料作りノウハウ
 
 ## セルフレビューの手順
 

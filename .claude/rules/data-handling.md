@@ -8,6 +8,13 @@
 - PJ単位のデータ: `.ai-secretary/projects/<PJ名>/`
 - グローバルデータ: `.ai-secretary/global/`
 
+## 人物データの三分割
+
+- 人の基本情報（役職・自分との関係・頼み方）: `global/people.md`
+- **レビュー傾向**（成果物をどう評価・指摘するか）: `global/review/people/<名前>.md`（カタカナ人名・役職なし）
+- その人の“そのPJでの”役割・力関係: `projects/<PJ>/people.md`
+- 個別FBの事実ログ: 該当タスクの `tasks.json` の `review_history`
+
 ## ファイル形式の使い分け
 
 - **JSON**: tasks.json, tasks_archive.json, patterns.json, config.json — 検索・フィルタ・数値集計が必要な構造データ
