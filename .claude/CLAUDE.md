@@ -28,6 +28,8 @@
 | メール/報告書/議事録の下書き（**執筆モード**） | **drafting** |
 | 週報の作成 | **weekly-report** |
 | ドラフト提出前のセルフチェック | **self-review** |
+| 資料見本からの構造パターン抽出・資料テンプレの生成/見直し | **doc-pattern-extraction** |
+| 資料(pptx)をClaude Designで作るためのプロンプト生成 | **doc-prompt-builder** |
 | VTT/メモの取り込み・タスク抽出（**抽出モード**） | **extraction** |
 | 全タスク一覧・ダッシュボード再生成・棚卸し | **dashboard** |
 | 関係者1人の立場・力関係・レビュー傾向を即確認 | **person-brief** |

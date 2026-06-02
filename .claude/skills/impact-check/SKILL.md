@@ -56,11 +56,13 @@ daily/weekly/monthly tasks.json（定期タスク）
 | prioritization | tasks.json, patterns.json, weekly-schedule.json | — |
 | learning | tasks.json, patterns.json, global/review/people/<名前>.md | patterns.json（observations, insights）, global/review/people/<名前>.md |
 | knowledge-base | knowledge.md, people.md | knowledge.md, people.md |
-| self-review | global/review/people/<名前>.md, tasks.json（review_history） | — |
+| self-review | global/review/people/<名前>.md, tasks.json（review_history）, 資料作成/pptx_font_audit.py・pptx_render.py（pptx成果物の検証） | — |
 | drafting | tasks.json, knowledge.md, people.md, patterns.json, templates/ | —（observations は learning 経由で記録） |
 | extraction | VTT/メモ, knowledge.md, people.md | tasks.json・knowledge.md・people.md（task-manager / knowledge-base 経由） |
 | strategic-analysis | knowledge.md, people.md, tasks.json, meetings/, files/, patterns.json | — |
 | weekly-report | 入力テキスト（VTT/メモ/下書き）中心 | — |
+| doc-pattern-extraction | 見本pptx, global/review/資料作成/（構造テンプレ・デザイン規定） | global/review/資料作成/（構造テンプレ生成・更新） |
+| doc-prompt-builder | global/review/資料作成/（構造テンプレ・図表パターン・デザイン規定）, knowledge.md, people.md, global/review/people/<名前>.md, tasks.json, user-profile.md, meetings/（核概念が会議由来のとき一次情報） | files/（Claude Design用プロンプト）。修正は learning（observations）経由で記録 |
 | impact-check | 全ファイル（読み取り専用） | — |
 
 ## 2つのモード

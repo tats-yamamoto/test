@@ -16,7 +16,10 @@
       "TaskUpdate(*)",
       "CronCreate(*)",
       "CronDelete(*)",
-      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\tats-yamamoto\\\\OneDrive - TOYOTA SYSTEMS Corporation\\\\ドキュメント\\\\01_task\\\\.ai-secretary\\\\projects\\\\CodeBeamer\\\\meetings\" -Recurse | ForEach-Object { $_.FullName + \" | \" + $_.LastWriteTime })"
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\tats-yamamoto\\\\OneDrive - TOYOTA SYSTEMS Corporation\\\\ドキュメント\\\\01_task\\\\.ai-secretary\\\\projects\\\\CodeBeamer\\\\meetings\" -Recurse | ForEach-Object { $_.FullName + \" | \" + $_.LastWriteTime })",
+      "PowerShell(Out-Null *)",
+      "Workflow(deep-research)",
+      "PowerShell(Get-ChildItem *)"
     ]
   },
   "hooks": {

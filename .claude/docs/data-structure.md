@@ -13,6 +13,9 @@ PJ追加・構造変更時はこのファイルも更新してください。
 │   ├── config.json                  PJ一覧・カテゴリ定義
 │   ├── patterns.json                学習パターン（見積もり精度、レビュー傾向等）
 │   ├── people.md                    関係者マスタ（全PJ共通）
+│   ├── review/                      レビュー関連ナレッジ
+│   │   ├── people/<名前>.md         レビュアーごとの傾向
+│   │   └── 資料作成/                構造テンプレ＋pptxデザインシステム（colors_and_type.css / レイアウト・図版規定.md / 図表パターン）
 │   ├── reminders.json               リマインダー（秘書のアクションキュー）
 │   ├── user-profile.md              ユーザープロフィール（勤務スタイル、報告ライン等）
 │   └── weekly-schedule.json         今週の会議スケジュール
@@ -403,7 +406,11 @@ drafting スキル（執筆モード）が使用するテンプレート。必�
 「成果物をレビューに通す」ための蓄積ナレッジの名前空間。
 
 - `people/<名前>.md` — レビュアーごとの傾向（`## サマリ` ＋ `## FB履歴`）。ファイル名はカタカナ人名（役職なし）。learning が書き込み、self-review / drafting が参照する。
-- （将来）資料作りのノウハウ。
+- `資料作成/` — 3層構成:
+  - **構造テンプレ**（報告 / 提案・決裁 / 新規事業 ＋ 共通基盤）: 並び・役割・トーンの型。`doc-pattern-extraction` が見本pptxから生成・更新。
+  - **pptxデザインシステム**（`colors_and_type.css`＝配色・フォント・文字サイズ ／ `レイアウト・図版規定.md`＝寸法・余白・図版ゾーン・色の意味・表スタイル ／ `図表パターン.md`＝定番図版）: 見本の**実測**で整備。Claude Design 経由でも **python-pptx ネイティブ作成**でも、この3点をデザインの拠り所にする。`doc-prompt-builder` が参照。
+  - **検証ツール**（`pptx_font_audit.py`＝出力pptxの全runサイズを集計し type scale 違反〔OFF_SCALE／TOO_SMALL／本文サイズ混在〕を検出 ／ `pptx_render.py`＝PowerPoint COM で pptx→PNG 目視用）: 生成方式（Claude Design／python-pptx／手動）を問わず、**出来上がった pptx を納品前にこれで検証**する。`self-review`・`doc-prompt-builder` が呼ぶ。
+  - `assets/`（logo / stamp 等の画像素材）。
 
 人物データは三分割で管理する（詳細は `global/review/_STRUCTURE.md` / `data-handling.md`）:
 
@@ -421,6 +428,10 @@ drafting スキル（執筆モード）が使用するテンプレート。必�
 | tasks.json | task-manager |
 | knowledge.md, people.md | knowledge-base |
 | global/review/people/<名前>.md | learning（書込）／ self-review・drafting・planning（参照） |
+| global/review/資料作成/（構造テンプレ） | doc-pattern-extraction（見本pptxから生成・更新）／ doc-prompt-builder（参照） |
+| projects/<PJ>/meetings/（VTT/txt 一次情報） | extraction・strategic-analysis・weekly-report（参照）／ doc-prompt-builder（資料の核概念が会議由来のとき参照） |
+| global/review/資料作成/（デザイン: colors_and_type.css・レイアウト・図版規定.md・図表パターン.md） | 実測で整備・更新／ doc-prompt-builder・pptxネイティブ作成が参照 |
+| global/review/資料作成/（検証ツール: pptx_font_audit.py・pptx_render.py） | self-review（pptx成果物を納品前に検証）／ doc-prompt-builder（出力pptxを検証）|
 | meetings.json, weekly-schedule.json | meeting |
 | patterns.json | learning, planning, prioritization |
 | reminders.json | morning-briefing（処理）・task-manager 等（登録） |

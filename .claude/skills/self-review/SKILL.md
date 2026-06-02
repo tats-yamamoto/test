@@ -9,7 +9,7 @@ description: ドラフト提出前のセルフレビュースキル。レビュ�
 
 1. `.ai-secretary/global/review/people/<レビュアー名>.md` — レビュアーの傾向（サマリ＋FB履歴）。**一次ソース**
 2. 対象タスクの `review_history` — このタスクの過去のFB（差し戻し履歴がある場合）
-3. （将来）`.ai-secretary/global/review/` 配下の資料作りノウハウ
+3. `.ai-secretary/global/review/資料作成/` の資料作成標準（`colors_and_type.css` 等）＋検証ツール（成果物が pptx のとき）
 
 ## セルフレビューの手順
 
@@ -34,6 +34,15 @@ people.md と patterns.json から以下を確認:
 - [ ] 結論・要旨が適切な位置にあるか（結論ファースト重視の人向け）
 - [ ] 数字・根拠が具体的か（数字重視の人向け）
 - [ ] 文量・粒度がレビュアーの好みに合っているか
+
+### 3.5 pptx成果物の標準準拠チェック（成果物が pptx のとき必須・機械）
+
+レビュアーの内容観点（上記）の前に、**出力 pptx が資料作成標準（type scale）を守れているかを機械検証**する。「文字が小さい／バラバラ」で外す事故を、レビュアーに見せる前に止める。生成方式（Claude Design／python-pptx スクリプト／手動）を問わず、最終 pptx を必ず通す。
+
+- 実行: `python .ai-secretary/global/review/資料作成/pptx_font_audit.py <file.pptx>`
+- **判定 PASS（OFF_SCALE=0・TOO_SMALL=0）を確認してから提出/納品**する
+- **FAIL の場合**: `pptx_render.py`（PowerPoint COM→PNG）で目視し、はみ出しは **文字を縮めずに**直す ―「文言を削る／コンテナ（枠・パネル）を広げる／スライドを分ける」（`colors_and_type.css` の床: 本文14pt未満禁止）。直したら再ビルド→再監査で PASS を確認
+- 背景: 標準（colors_and_type.css）が正しくても生成側が裏切ることがある（obs-20260602-001。v5 で OFF_SCALE 263箇所）。"作る→標準を守れているか検証する" ループをここで担保する
 
 ### 4. 修正提案を出力する
 
