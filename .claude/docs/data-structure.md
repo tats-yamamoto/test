@@ -212,6 +212,7 @@ PJ一覧とタスクカテゴリの定義。
       "time": "HH:MM-HH:MM",
       "participants": ["名前"],
       "purpose": "目的",
+      "mode": "相談 | 決定 | 報告 or null",
       "project": "PJ名",
       "status": "scheduled | rescheduled | cancelled",
       "note": "備考 or null"
@@ -291,10 +292,16 @@ PJのナレッジ。決定事項には行間情報を添える。
 ※ meetings.json で管理
 ## 決定事項
 - YYYY-MM-DD <会議名>: <決定内容>
-  - 【行間】<VTTに残らない補足>
+  - 【行間】<VTTに残らない補足。誰が駆動したか・決定権者のサイン有無など>
+## 論点・検討中
+- YYYY-MM-DD <会議名>: <まだ決まっていない論点・方向性>
+  - 【行間】<同意の質（本物の合意か、忖度・ノリ・沈黙か）・本心未確認など>
 ## 制約
 ## メモ
 ```
+
+- `## 決定事項` と `## 論点・検討中` は確度で書き分ける（明示的クローズ・担当/期限確定があれば決定、発散・表面同意のみなら論点）。詳細は `core-principles.md`「発散と収束の区別」と knowledge-base スキル参照。
+- 論点が後で決まったら、決まった日付で `## 決定事項` へ移す。
 
 ### projects/\<PJ\>/people.md
 
@@ -325,6 +332,7 @@ PJ固有の関係者情報。レビュー傾向は日付付きで蓄積。
     "time": "HH:MM-HH:MM",
     "participants": ["名前"],
     "purpose": "目的",
+    "mode": "相談 | 決定 | 報告 or null（抽出時のデフォルトの構え。未設定は中立）",
     "project": "PJ名",
     "suspended": false,
     "suspended_reason": "理由 or null"

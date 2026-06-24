@@ -18,6 +18,7 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
 - 定例会議自体の恒久的な変更は `meetings.json` を更新
 - JSON を書き込んだ後は必ず読み直して構文確認する
 - 実行前にユーザーの承認を得る
+- 会議には任意で `mode`（`相談` / `決定` / `報告`）を持たせられる。これは抽出時のデフォルトの構え（決定が出る前提か、発散主体か）を決めるヒント。未設定なら中立に扱う。※レビュー・面談は learning 等の専用フローで扱うため mode は付けない（→ `core-principles.md`「発散と収束の区別」）
 
 ## 機能
 
@@ -55,7 +56,7 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
 `weekly-schedule.json` に直接追加する。
 
 **手順:**
-1. ユーザーから以下をヒアリング: タイトル、日付、時間、参加者、PJ、目的
+1. ユーザーから以下をヒアリング: タイトル、日付、時間、参加者、PJ、目的、モード（相談/決定/報告、任意）
 2. 新しいエントリを作成（id は `ws-XXX` で連番、source_id は null）
 3. `weekly-schedule.json` に追加
 4. 構文確認
@@ -70,6 +71,7 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
   "time": "10:00-10:30",
   "participants": ["カタオカ"],
   "purpose": "急ぎの相談",
+  "mode": "相談",
   "project": "KaizenConnect",
   "status": "scheduled",
   "note": "単発"
@@ -80,7 +82,7 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
 該当PJの `meetings.json` に追加する。
 
 **手順:**
-1. ユーザーから以下をヒアリング: タイトル、曜日、時間、参加者、PJ、目的
+1. ユーザーから以下をヒアリング: タイトル、曜日、時間、参加者、PJ、目的、モード（相談/決定/報告、任意）
 2. 該当PJの `meetings.json` に追加（id は `mtg-r-{PJ略称}-NNN` で連番。例: `mtg-r-cb-001`）
 3. 構文確認
 4. 今週分を `weekly-schedule.json` にも展開
@@ -120,7 +122,7 @@ description: 会議の一覧表示・追加・変更・キャンセル・週次�
 4. `weekly-schedule.json` を新しいデータで上書き:
    - `week`: 今週の週番号（例: `"2026-W14"`）
    - `generated_from_recurring`: true
-   - `meetings`: 展開した全定例会議
+   - `meetings`: 展開した全定例会議（各定例の `purpose`・`mode` 等の属性はそのまま引き継ぐ）
 5. id は `ws-001` から連番で振り直す
 6. 全エントリの `status` は `"scheduled"`、`note` は null
 7. 構文確認
