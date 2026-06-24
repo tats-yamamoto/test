@@ -1,0 +1,221 @@
+/* ============================================================
+   Toyota Systems — PPTX Design System
+   colors_and_type.css  ＝ 配色・フォント・文字サイズの一次ソース
+   ------------------------------------------------------------
+   抽出元: 横山一さん 報告5件（本部長報告 25/10・HB報告 25/01/03/04/07）を
+   python-pptx で実測し検証（2026-05-29）。
+   ・配色: テーマ実測値と一致を確認済み（dk1/dk2/lt2/accent1..6/hlink）→ 変更不可。
+   ・文字: 実測で type scale を是正（本文 14→16pt 等）。下記スケールを厳守する。
+   レイアウト・余白・図版の置き方は別ファイル
+     → `レイアウト・図版規定.md`（pt/inch のスライド規定。pptxを組む一次ソース）
+   ============================================================ */
+
+/* ---- Fonts ----------------------------------------------------
+   実測（横山一 報告5件）:
+     ・メイリオ / Meiryo UI … HB報告4件（社内Windowsに必ずある＝確実）
+     ・Noto Sans JP / 〜Bold … 最新の本部長報告（25/10）＝新しいテンプレ方向
+   方針: pptx生成では Noto Sans JP を第一候補、未導入PC向けに Meiryo を確実な
+   フォールバックに置く（チェーン下記）。見出しは Bold(700)。
+   ※ python-pptx で組む際は latin/ea/cs の3系統に同じ書体を指定すること。
+---------------------------------------------------------------- */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+:root {
+  /* ---------- Brand signature -------------------------------- */
+  /* The horizontal rule under every slide title is this gradient,
+     and the logo mark's three flame shapes use the same three stops. */
+  --ts-grad-red:    #C81528;   /* logo flame 1 / gradient start  */
+  --ts-grad-orange: #E83820;   /* logo flame 2 / gradient middle */
+  --ts-grad-amber:  #F6AC19;   /* logo flame 3 / gradient end    */
+  --ts-title-rule:  linear-gradient(90deg,
+                      var(--ts-grad-red) 0%,
+                      var(--ts-grad-orange) 50%,
+                      var(--ts-grad-amber) 100%);
+  --ts-brand-orange: #E8421E;  /* "SYSTEMS" wordmark / brand red-orange */
+
+  /* ---------- Ink & surface ---------------------------------- */
+  --ts-ink:        #1C1C1C;    /* primary body text (dk1)        */
+  --ts-ink-2:      #292929;    /* alt near-black                 */
+  --ts-muted:      #777777;    /* TITLES, footer, captions (dk2/tx2) */
+  --ts-line:       #BFBFBF;    /* hairline borders, table grid   */
+  --ts-bg:         #FFFFFF;    /* slide background               */
+  --ts-bg-subtle:  #E7E6E6;    /* light fill / zebra (lt2)       */
+  --ts-node:       #E0E0E0;    /* diagram label-node fill (gray) */
+  --ts-callout:    #F2EADA;    /* beige callout / note box       */
+  --ts-callout-bd: #D9C9A8;    /* beige callout border           */
+
+  /* ---------- Accent palette (theme accent1..6) -------------- */
+  --ts-accent-orange: #E06A3B; /* accent1 — PRIMARY accent       */
+  --ts-accent-teal:   #197993; /* accent2                        */
+  --ts-accent-red:    #B3261E; /* accent3 — alert / risk         */
+  --ts-accent-amber:  #EDAD0B; /* accent4 — caution / highlight  */
+  --ts-accent-blue:   #3261AB; /* accent5                        */
+  --ts-accent-green:  #188855; /* accent6 — done / positive      */
+  --ts-hlink:         #0563C1; /* hyperlink                      */
+
+  /* ---------- Type families ---------------------------------- */
+  --ts-font: "Noto Sans JP", "メイリオ", "Meiryo UI", "Segoe UI", system-ui, sans-serif;
+
+  /* ---------- Type scale ★実測是正（pptxは pt 値を厳守）---------
+     Canvas 13.333"×7.5" (16:9, 144px/inch)。pptx は下記 pt 値を使う。
+     px は HTML描画用の換算（pt×1.333）。
+     ◆厳守ルール（"文字が小さい/バラつく"の再発防止）:
+       - 本文は 16pt が標準。密なスライドでも 14pt まで。14pt 未満にしない。
+       - 1スライド内で本文サイズを混在させない。小さくしてよいのは
+         図中ラベル / 表セル / キャプションのみ（11–12pt）。
+       - メッセージライン(主張) は 18pt 太字・黒。色帯は使わない
+         （配置は `レイアウト・図版規定.md` §2）。
+     -------------------------------------------------------------- */
+  --ts-size-cover-title:   48px;  /* 表紙タイトル              36pt   */
+  --ts-size-divider-title: 43px;  /* 章扉タイトル(gray bold)   32pt   */
+  --ts-size-cover-sub:     24px;  /* 表紙サブ                  18pt   */
+  --ts-size-title:         27px;  /* スライドタイトル(話題/gray) 20pt */
+  --ts-size-msgline:       24px;  /* メッセージライン(主張/黒太字) 18pt */
+  --ts-size-h2:            24px;  /* スライド内見出し          18pt   */
+  --ts-size-subhead:       19px;  /* 見出し下の小見出し(gray)  14pt   */
+  --ts-size-body:          21px;  /* 本文(標準)                16pt   */
+  --ts-size-body-dense:    19px;  /* 本文(密なスライド)        14pt   */
+  --ts-size-small:         15px;  /* 表セル/キャプション/図ラベル 11pt */
+  --ts-size-footer:        13px;  /* © フッター                10pt   */
+  --ts-size-pagenum:       16px;  /* ページ番号                12pt   */
+
+  /* ---------- Weights ---------------------------------------- */
+  --ts-w-regular: 400;
+  --ts-w-medium:  500;
+  --ts-w-bold:    700;
+  --ts-w-black:   900;
+
+  /* ---------- Department / role colours ----------------------
+     Diagram "ribbon" steps are tinted by the owning department.
+     Each role has a soft fill + a strong border/text colour. ---- */
+  --ts-role-legal-fill:   #DCE7F4;  --ts-role-legal-ink:   #3261AB; /* 法規認証部 */
+  --ts-role-owner-fill:   #F8DDD0;  --ts-role-owner-ink:   #C2410C; /* 法規責任者 */
+  --ts-role-sys-fill:     #FCE4A6;  --ts-role-sys-ink:     #8A6A00; /* システム主管 */
+  --ts-role-ecu-fill:     #1F5C8B;  --ts-role-ecu-ink:     #FFFFFF; /* ECU標準 (dark) */
+  --ts-role-charge-fill:  #D8E9C6;  --ts-role-charge-ink:  #2F6B1E; /* ECU車担 */
+  --ts-role-authority-fill:#E9D4EC; --ts-role-authority-ink:#7A3E86; /* 当局 */
+
+  /* Lavender "key message" callout (bottom-of-slide takeaway box) */
+  --ts-keymsg-fill: #EAD9F2;
+  --ts-keymsg-ink:  #1C1C1C;
+
+  /* Diagonal hatch fill used inside system grouping boxes */
+  --ts-hatch: repeating-linear-gradient(45deg,
+                #EAF1FA 0, #EAF1FA 6px, #DCE7F4 6px, #DCE7F4 12px);
+
+  /* ---------- Geometry --------------------------------------- */
+  --ts-radius-node: 6px;   /* rounded diagram nodes              */
+  --ts-radius-box:  4px;   /* callouts / cards                   */
+  --ts-radius-grp:  12px;  /* large rounded grouping boxes       */
+  --ts-rule-h:      4px;   /* title gradient rule thickness      */
+
+  /* ---------- Slide geometry (px on 1920×1080 canvas) ---------
+     Measured from the source decks' masters & slides.           */
+  --ts-slide-w:      1920px;
+  --ts-slide-h:      1080px;
+  --ts-title-x:      54px;   /* title left edge                  */
+  --ts-title-y:      33px;   /* title top                        */
+  --ts-rule-y:       100px;  /* gradient rule top (FULL-BLEED)   */
+  --ts-lead-x:       133px;  /* takeaway line left edge          */
+  --ts-lead-y:       120px;  /* takeaway line top                */
+  --ts-body-top:     176px;  /* content zone top                 */
+  --ts-body-x:       40px;   /* content zone side margin         */
+  --ts-body-bottom:  66px;   /* content zone bottom inset        */
+  --ts-foot-y:       30px;   /* footer baseline inset from bottom*/
+}
+
+/* ============================================================
+   Semantic element styles — use these directly in slides/docs
+   ============================================================ */
+
+.ts-cover-title {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-bold);
+  font-size: var(--ts-size-cover-title);
+  color: var(--ts-ink);
+  line-height: 1.25;
+  letter-spacing: .01em;
+}
+
+.ts-cover-sub {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-medium);
+  font-size: var(--ts-size-cover-sub);
+  color: var(--ts-muted);
+  line-height: 1.4;
+}
+
+/* Slide title: gray, bold, top-left, sitting above the gradient rule */
+.ts-title {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-bold);
+  font-size: var(--ts-size-title);
+  color: var(--ts-muted);
+  line-height: 1.2;
+}
+
+.ts-title-rule {
+  height: var(--ts-rule-h);
+  background: var(--ts-title-rule);
+  border: 0;
+  width: 100%;
+}
+
+.ts-h2 {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-bold);
+  font-size: var(--ts-size-h2);
+  color: var(--ts-ink);
+  line-height: 1.35;
+}
+
+/* Message line: the slide's assertion. Bold BLACK, no colour band
+   (実物は帯を使わない). Sits below the title rule. */
+.ts-msgline {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-bold);
+  font-size: var(--ts-size-msgline);
+  color: var(--ts-ink);
+  line-height: 1.3;
+}
+
+/* Gray sub-caption under an in-slide section heading (.ts-h2). */
+.ts-subhead {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-regular);
+  font-size: var(--ts-size-subhead);
+  color: var(--ts-muted);
+  line-height: 1.3;
+}
+
+.ts-body {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-regular);
+  font-size: var(--ts-size-body);
+  color: var(--ts-ink);
+  line-height: 1.6;
+}
+
+.ts-small {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-regular);
+  font-size: var(--ts-size-small);
+  color: var(--ts-muted);
+  line-height: 1.5;
+}
+
+.ts-footer {
+  font-family: var(--ts-font);
+  font-weight: var(--ts-w-regular);
+  font-size: var(--ts-size-footer);
+  color: var(--ts-muted);
+}
+
+/* Emphasis marker used heavily in body copy: bold + brand orange */
+.ts-em {
+  font-weight: var(--ts-w-bold);
+  color: var(--ts-brand-orange);
+}
+
+/* Hyperlinks */
+.ts-link { color: var(--ts-hlink); text-decoration: underline; }
