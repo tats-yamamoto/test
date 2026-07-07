@@ -78,7 +78,7 @@ def main():
             msg += f"\n（他 {len(warns) - 10} 件）"
         print(json.dumps(
             {"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": msg}},
-            ensure_ascii=False,
+            ensure_ascii=True,  # ASCIIエスケープで出力（cp932端末での文字化け防止）
         ))
 
 

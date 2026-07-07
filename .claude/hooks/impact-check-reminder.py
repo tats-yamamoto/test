@@ -25,7 +25,7 @@ def main():
                     "impact-check（EVENT: スキル変更）の実行要否と、data-structure.md の更新要否を確認してください。"
                 ),
             }
-        }, ensure_ascii=False))
+        }, ensure_ascii=True))  # ASCIIエスケープで出力（cp932端末での文字化け防止）
 
 
 if __name__ == "__main__":

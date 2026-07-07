@@ -6,8 +6,42 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -d .ai-secretary/projects || echo '{\"hookSpecificOutput\":{\"message\":\".ai-secretary/projects が見つかりません。/setup を実行して初期セットアップを行ってください。\"}}'",
-            "description": "AI秘書データディレクトリの存在確認"
+            "command": "python .claude/hooks/session-health-check.py",
+            "description": "AI秘書の運用ループ詰まり検知（1日1回・問題時のみ通知）"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"現在: $(date '+%Y-%m-%d %H:%M (%a)')\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/validate-json.py"
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/todo-completion-check.py"
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/learning-reminder.py"
+          },
+          {
+            "type": "command",
+            "command": "python .claude/hooks/impact-check-reminder.py"
           }
         ]
       }
