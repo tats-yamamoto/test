@@ -31,6 +31,7 @@
 | 着手前のすり合わせが必要な依頼（曖昧・重い・やり直し高コスト） | **sow-quality-assurance**                |
 | 資料見本からの構造パターン抽出・資料テンプレの生成/見直し      | **doc-pattern-extraction**               |
 | 資料(pptx)をClaude Designで作るためのプロンプト生成            | **doc-prompt-builder**                   |
+| A3資料の作成・添削、問題解決8STEPの相談、テーマ検証            | **a3-problem-solving**                   |
 | VTT/メモの取り込み・タスク抽出（**抽出モード**）               | **extraction**                           |
 | 全タスク一覧・ダッシュボード再生成・棚卸し                     | **dashboard**                            |
 | 関係者1人の立場・力関係・レビュー傾向を即確認                  | **person-brief**                         |

@@ -440,6 +440,7 @@ drafting スキル（執筆モード）が使用するテンプレート。必�
 | projects/<PJ>/meetings/（VTT/txt 一次情報） | extraction・strategic-analysis・weekly-report（参照）／ doc-prompt-builder（資料の核概念が会議由来のとき参照） |
 | global/review/資料作成/（デザイン: colors_and_type.css・レイアウト・図版規定.md・図表パターン.md） | 実測で整備・更新／ doc-prompt-builder・pptxネイティブ作成が参照 |
 | global/review/資料作成/（検証ツール: pptx_font_audit.py・pptx_render.py） | self-review（pptx成果物を納品前に検証）／ doc-prompt-builder（出力pptxを検証）|
+| projects/FY26問題解決研修/（**発表会攻略ガイド.md**・問題解決8STEP詳細.md・A3作成ガイド.md・A3記入テンプレ.md） | a3-problem-solving（参照）。**発表会攻略ガイド.md が最優先**（社内の評価軸・45カ条・社内版面・職層別期待値・発表）。原典は同PJの `files/高評価資料＆資料作成ポイント/`（社内・実名資料）と `files/講義資料/`（プレセナ研修）。PJ固有の参照資産で、他PJからも参照する |
 | meetings.json, weekly-schedule.json | meeting |
 | patterns.json | learning, planning, prioritization |
 | reminders.json | morning-briefing（処理）・task-manager 等（登録） |

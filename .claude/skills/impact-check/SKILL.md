@@ -63,6 +63,7 @@ daily/weekly/monthly tasks.json（定期タスク）
 | weekly-report | 入力テキスト（VTT/メモ/下書き）中心 | — |
 | doc-pattern-extraction | 見本pptx, global/review/資料作成/（構造テンプレ・デザイン規定） | global/review/資料作成/（構造テンプレ生成・更新） |
 | doc-prompt-builder | global/review/資料作成/（構造テンプレ・図表パターン・デザイン規定）, knowledge.md, people.md, global/review/people/<名前>.md, tasks.json, user-profile.md, meetings/（核概念が会議由来のとき一次情報） | files/（Claude Design用プロンプト）。修正は learning（observations）経由で記録 |
+| a3-problem-solving | projects/FY26問題解決研修/（**発表会攻略ガイド.md**〔最優先〕, 問題解決8STEP詳細.md, A3作成ガイド.md, A3記入テンプレ.md, files/高評価資料＆資料作成ポイント/, files/講義資料/）, 対象PJの knowledge.md・people.md, global/review/people/<名前>.md, tasks.json, global/user-profile.md（職層） | projects/<PJ>/A3_<テーマ>_<日付>.md（承認後）。指摘・修正は learning（observations）経由で記録 |
 | impact-check | 全ファイル（読み取り専用） | — |
 
 ## 2つのモード
