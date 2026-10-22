@@ -1,0 +1,66 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/session-health-check.py",
+            "commandWindows": "python .claude/hooks/session-health-check.py",
+            "statusMessage": "AI秘書ヘルスチェック",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/now.py",
+            "commandWindows": "python .claude/hooks/now.py",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "apply_patch|Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/validate-json.py",
+            "commandWindows": "python .claude/hooks/validate-json.py",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/todo-completion-check.py",
+            "commandWindows": "python .claude/hooks/todo-completion-check.py",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/learning-reminder.py",
+            "commandWindows": "python .claude/hooks/learning-reminder.py",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/impact-check-reminder.py",
+            "commandWindows": "python .claude/hooks/impact-check-reminder.py",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/codex-sync.py",
+            "commandWindows": "python .claude/hooks/codex-sync.py",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -252,6 +252,11 @@ daily/weekly/monthly tasks.json（定期タスク）
 - 各スキルが期待するフィールド（`suspended`, `day_of_week: "daily"` 等）が、対応するデータファイルで正しく処理されているか
 - **`patterns.json` の observations が正規形（`id, date, type, context, observation, source` の6キー、`type` は5値enum）に揃っているか**
 
+#### G. Codex 用ファイルの鮮度
+- `python tools/sync-codex.py --check` が「最新です」になるか（古ければ `python tools/sync-codex.py` で再生成）
+- サイズ警告（AGENTS.md が読み込み上限の9割超）が出ていないか
+- `AGENTS.md`・`.agents/skills/` が直接編集されていないか（正本と食い違う変更は、正本に反映してから再生成）
+
 ### 出力形式
 
 #### イベント駆動モード

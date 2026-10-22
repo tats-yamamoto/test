@@ -1,23 +1,21 @@
 """B2: TODO全完了 + related_meetings 検出 (PostToolUse)
 tasks.json への書き込み後、全TODOが完了かつ未来のrelated_meetingsが残っている
 タスクを検出し、starts_at の設定を提案する。
-hook入力は stdin から JSON で受け取る（Claude Code のhook仕様）。
+hook入力は stdin から JSON で受け取る（Claude Code / Codex 両対応: _hookio 参照）。
 """
 import json
-import sys
 from datetime import date
+
+from _hookio import emit_context, get_edits, read_stdin
 
 
 def main():
-    try:
-        data = json.load(sys.stdin)
-    except Exception:
-        return
+    data = read_stdin()
+    for e in get_edits(data):
+        check(e["path"], e["norm"])
 
-    tool_input = data.get("tool_input", {}) or {}
-    file_path = tool_input.get("file_path", "")
-    norm = file_path.replace("\\", "/")
 
+def check(file_path, norm):
     # .ai-secretary/projects/*/tasks.json のみ対象（定期タスクは除外）
     if ".ai-secretary/" not in norm or not norm.endswith("/tasks.json"):
         return
@@ -65,12 +63,7 @@ def main():
 
     if notes:
         context = "[TODO全完了検出]\n" + "\n".join(notes)
-        print(json.dumps({
-            "hookSpecificOutput": {
-                "hookEventName": "PostToolUse",
-                "additionalContext": context,
-            }
-        }, ensure_ascii=True))  # ASCIIエスケープで出力（cp932端末での文字化け防止）
+        emit_context("PostToolUse", context)
 
 
 if __name__ == "__main__":

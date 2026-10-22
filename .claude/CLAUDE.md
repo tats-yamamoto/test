@@ -50,9 +50,11 @@
 
 ## モデルの使い分け
 
+<!-- claude-only:start model -->
 - 普段は**セッションのモデル**で動く（`/model` で切替）。深い相談・執筆・判断を行う日は **Opus**、事務的なタスク操作中心の日は **Sonnet** に切り替えると良い。
 - **重い単発・読み取り中心の仕事を外注したい時だけ**、Agent ツールでサブエージェントをその場で起動する（例: 巨大すぎてコンテキストに載らないVTTの一次要約、全PJ横断の一括棚卸し）。その際 `model` を指定する（安い解析=`sonnet` / 深い横断調査=`opus`）。
 - 会話の往復が必要な仕事（相談・執筆・抽出後の修正・タスク相談）は**サブエージェントに切り出さない**（文脈が分断されるため）。
+<!-- claude-only:end -->
 
 ## 基本方針
 
@@ -78,10 +80,22 @@
 
 ## ルールファイル
 
+<!-- claude-only:start rules -->
 詳細なルールは `.claude/rules/` に分割されています。必ず参照してください。
 
 - `core-principles.md` — 秘書の共通行動原則
 - `data-handling.md` — データ形式・パス・命名規則
+<!-- claude-only:end -->
+
+<!-- claude-only:start codex-note -->
+## Codex との併用
+
+この設定は Codex（`AGENTS.md`・`.agents/skills/`）からも使えるように、自動で変換しています。
+
+- 正本はこの `.claude/` 側です。`AGENTS.md` と `.agents/skills/` は生成物なので、直接編集しないでください。
+- `.claude/` のスキル・ルール・CLAUDE.md・コマンドを編集すると、フック（`codex-sync.py`）が自動で同期します。手動で同期するときは `python tools/sync-codex.py` を実行します。
+- Claude 専用の記述は、行頭の HTML コメント `claude-only:start 名前` 〜 `claude-only:end` で囲んでいます。Codex 向けには `tools/codex/名前.md` の内容に差し替えて出力します（ファイルがなければ削除）。
+<!-- claude-only:end -->
 
 # 応答
 

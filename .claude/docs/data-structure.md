@@ -449,3 +449,18 @@ drafting スキル（執筆モード）が使用するテンプレート。必�
 | 構成変更の影響調査 | impact-check |
 
 データ取扱いの詳細ルールは `.claude/rules/data-handling.md` を参照。
+
+## 秘書の設定ファイル（Claude Code / Codex 併用）
+
+`.ai-secretary/` のデータは両ツールで共通。設定は `.claude/` が正本で、Codex 用は自動生成する。
+
+| ファイル | 種別 | 内容 |
+|---|---|---|
+| `.claude/CLAUDE.md`・`.claude/rules/`・`.claude/skills/`・`.claude/commands/` | 正本 | Claude Code が読む。編集はここだけ |
+| `.claude/settings.json` | 正本 | Claude Code のフック設定 |
+| `.claude/hooks/*.py` | 正本（共用） | フック本体。入力の読み取りは `_hookio.py` で両ツールの形式に対応 |
+| `tools/sync-codex.py` | 正本 | Codex 用ファイルの生成スクリプト（`--check` で鮮度確認） |
+| `tools/codex/*.md` | 正本 | AGENTS.md の冒頭説明（`_header.md`）と、claude-only ブロックの差し替え文 |
+| `.codex/hooks.json`・`.codex/config.toml` | 正本 | Codex のフック設定・プロジェクト設定 |
+| `AGENTS.md` | **生成物** | CLAUDE.md（claude-only 部分を差し替え）＋ルール全文 |
+| `.agents/skills/` | **生成物** | `.claude/skills/` のコピー |

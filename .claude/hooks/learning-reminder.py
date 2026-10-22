@@ -3,25 +3,23 @@ tasks.json への書き込みで done / drop を検出したら、learning ス�
 発火は完了・取り下げ時のみ（通常の追加・更新では鳴らない）。
 ※ milestones の "done": false や status enum の列挙にマッチしないよう、
   "status": "done" / "dropped": true の形のみを検出する。
-hook入力は stdin から JSON で受け取る。
+hook入力は stdin から JSON で受け取る（Claude Code / Codex 両対応: _hookio 参照）。
 """
-import json
 import re
-import sys
+
+from _hookio import emit_context, get_edits, read_stdin
 
 
 def main():
-    try:
-        data = json.load(sys.stdin)
-    except Exception:
-        return
+    data = read_stdin()
+    for e in get_edits(data):
+        if check(e["norm"], e["content"]):
+            return  # 1回の編集で通知は1回まで
 
-    tool_input = data.get("tool_input", {}) or {}
-    fp = tool_input.get("file_path", "").replace("\\", "/")
+
+def check(fp, content):
     if ".ai-secretary/" not in fp or not fp.endswith("/tasks.json"):
-        return
-
-    content = tool_input.get("new_string", "") or tool_input.get("content", "") or ""
+        return False
 
     msg = None
     if re.search(r'"status"\s*:\s*"done"', content):
@@ -30,12 +28,9 @@ def main():
         msg = "タスク取り下げを検出。learning スキル §2（取り下げ傾向→dropped_task_patterns）を実行し、archive 移動も忘れずに。"
 
     if msg:
-        print(json.dumps({
-            "hookSpecificOutput": {
-                "hookEventName": "PostToolUse",
-                "additionalContext": "[学習記録リマインド] " + msg,
-            }
-        }, ensure_ascii=True))  # ASCIIエスケープで出力（cp932端末での文字化け防止）
+        emit_context("PostToolUse", "[学習記録リマインド] " + msg)
+        return True
+    return False
 
 
 if __name__ == "__main__":

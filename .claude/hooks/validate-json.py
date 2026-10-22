@@ -2,10 +2,12 @@
 .ai-secretary/ 配下の JSON 書込み後:
   1) 構文を検証（壊れていれば exit 2 でブロックし、修正を促す）
   2) 主要ファイルの構造ドリフト（必須キー欠落・enum外の値）を非ブロックで警告
-hook入力は stdin から JSON で受け取る。
+hook入力は stdin から JSON で受け取る（Claude Code / Codex 両対応: _hookio 参照）。
 """
 import json
 import sys
+
+from _hookio import emit_context, get_edits, read_stdin
 
 try:
     sys.stderr.reconfigure(encoding="utf-8")
@@ -19,14 +21,12 @@ OBS_TYPE = {"correction", "preference", "decision", "workflow", "knowledge"}
 
 
 def main():
-    try:
-        data = json.load(sys.stdin)
-    except Exception:
-        return
+    data = read_stdin()
+    for e in get_edits(data):
+        check(e["path"], e["norm"])
 
-    tool_input = data.get("tool_input", {}) or {}
-    fp = tool_input.get("file_path", "")
-    norm = fp.replace("\\", "/")
+
+def check(fp, norm):
     if ".ai-secretary/" not in norm or not norm.endswith(".json"):
         return
 
@@ -76,10 +76,7 @@ def main():
         msg = f"[構造ドリフト警告] {norm}\n- " + "\n- ".join(warns[:10])
         if len(warns) > 10:
             msg += f"\n（他 {len(warns) - 10} 件）"
-        print(json.dumps(
-            {"hookSpecificOutput": {"hookEventName": "PostToolUse", "additionalContext": msg}},
-            ensure_ascii=True,  # ASCIIエスケープで出力（cp932端末での文字化け防止）
-        ))
+        emit_context("PostToolUse", msg)
 
 
 if __name__ == "__main__":
